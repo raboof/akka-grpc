@@ -300,7 +300,7 @@ final class ScalaServerStreamingRequestBuilder[I, O](
 
   override def invokeWithMetadata(source: I): Source[O, Future[GrpcResponseMetadata]] =
     Source
-      .fromFutureSource(channel.value match {
+      .futureSource(channel.value match {
         case Some(Success(c)) => invokeWithMetadata(source, c)
         case Some(Failure(t)) => Future.failed(t)
         case None             => channel.flatMap(c => invokeWithMetadata(source, c))
@@ -396,7 +396,7 @@ final class ScalaBidirectionalStreamingRequestBuilder[I, O](
 
   override def invokeWithMetadata(source: Source[I, NotUsed]): Source[O, Future[GrpcResponseMetadata]] =
     Source
-      .fromFutureSource(channel.value match {
+      .futureSource(channel.value match {
         case Some(Success(c)) => invokeWithMetadata(source, c)
         case Some(Failure(t)) => Future.failed(t)
         case None             => channel.flatMap(c => invokeWithMetadata(source, c))
