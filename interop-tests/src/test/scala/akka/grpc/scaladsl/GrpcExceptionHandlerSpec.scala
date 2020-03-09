@@ -44,7 +44,7 @@ class GrpcExceptionHandlerSpec
         .recoverWith(GrpcExceptionHandler.defaultHandler)
 
       result.futureValue.entity match {
-        case Chunked(contentType, chunks) =>
+        case Chunked(_, chunks) =>
           chunks.runWith(Sink.seq).futureValue match {
             case Seq(LastChunk("", List(`Status`("3")))) => // ok
           }

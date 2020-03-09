@@ -19,7 +19,6 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import scala.collection.immutable
 import scala.concurrent.{ Await, Future }
-import scala.concurrent.duration._
 
 class GrpcMarshallingSpec extends AnyWordSpec with Matchers {
   "The scaladsl GrpcMarshalling" should {

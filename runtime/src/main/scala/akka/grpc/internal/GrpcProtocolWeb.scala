@@ -22,7 +22,7 @@ abstract class GrpcProtocolWebBase(subType: String) extends AbstractGrpcProtocol
     Grpc.writer(this, codec, frame => encodeFrame(codec, frame))
 
   override protected def reader(codec: Codec): GrpcProtocolReader =
-    Grpc.reader(this, codec, decodeFrame, flow => Flow[ByteString].map(frame => preDecode(frame)).via(flow))
+    Grpc.reader(codec, decodeFrame, flow => Flow[ByteString].map(frame => preDecode(frame)).via(flow))
 
   @inline
   private def encodeFrame(codec: Codec, frame: Frame): ChunkStreamPart = {
@@ -40,7 +40,7 @@ abstract class GrpcProtocolWebBase(subType: String) extends AbstractGrpcProtocol
     (frameHeader & 80) match {
       case 0 => DataFrame(data)
       case 1 => TrailerFrame(decodeTrailer(data))
-      case f => throw new StatusException(Status.INTERNAL.withDescription("Unknown frame type $f"))
+      case f => throw new StatusException(Status.INTERNAL.withDescription(s"Unknown frame type [$f]"))
     }
   }
 
